@@ -1,3 +1,4 @@
+import celelib_v_0_3
 import eddington_automated
 
 def libraryloader():
@@ -36,7 +37,7 @@ def libraryloader():
                 print("2 = try again")
                 a7 = input("Would you like to add this celestial object to the library or try again?>>>")
                 if a7 == "1":
-                    import celelib_v_0_3
+                    #was here
                     celelib_v_0_3.celestialibrary()
                 elif a7 == "2":
                     inp()
