@@ -10,7 +10,7 @@ from alpaca.telescope import *
 from alpaca.exceptions import *
 
 import astropy.io.fits as fits
-
+# random change
 
 albert = Telescope('192.168.1.47:11111',0)
 stacy = Camera('192.168.1.47:11111',0)
