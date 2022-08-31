@@ -1,5 +1,5 @@
 import celelib_v_0_3
-import eddington_automated
+
 
 def libraryloader():
 
@@ -29,7 +29,6 @@ def libraryloader():
                 global Dec #Converting DEC value into a float 
                 Dec = float(a6)
                 print("Declination value:", Dec)
-                eddington_automated.mount_movement_control(Ra,Dec)
 
             except:
                 print("You didn't select a valid celestial object.")
