@@ -1,3 +1,4 @@
+#The purpose of this program is to hold a library of functions for main UI
 
 def celestialibrary():
     

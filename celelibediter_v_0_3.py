@@ -1,3 +1,5 @@
+#The purpose of this file is to directly input new celestial objects into the textfile 
+
 
 def celestialibrary():
     

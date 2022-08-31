@@ -1,3 +1,8 @@
+#Custom Imports
+import celelib_v_0_3
+import celelibloader_v_0_3
+
+
 
 import time
 import os
@@ -101,6 +106,7 @@ def user_validation_station(validate_choice):
     
     elif user_choice == "2":
         print("Library of Coordinates")
+        celelibloader_v_0_3.libraryloader()
 
     elif user_choice == "3":
         #returns mount to 0/0
