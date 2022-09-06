@@ -4,15 +4,22 @@ import numpy as np
 import matplotlib.pyplot as plt
 from astropy.io import fits
 
-imagedata = fits.getdata(r"C:\Users\kyleg\OneDrive\Desktop\test.fts")
+imagedata1 = fits.getdata(r"C:\Users\kyleg\OneDrive\Desktop\contents.fits")
+imagedata2 = fits.getdata(r"C:\Users\kyleg\OneDrive\Desktop\contents1.fits")
 
-print(type(imagedata))    #numpy.ndarray
-print(imagedata.shape)    #(3520, 4656)
+#print(type(imagedata))    #numpy.ndarray
+#print(imagedata.shape)    #(3520, 4656)
 
 
-plt.imshow(imagedata, cmap='gray')
-plt.colorbar()
 
+
+
+image1 = plt.imshow(imagedata1, cmap='gray')
 plt.show()
+image2 = plt.imshow(imagedata2, cmap = 'binary')
+plt.show()
+#plt.colorbar()
+
+#plt.show()
 
    
