@@ -21,8 +21,9 @@ imagedata = fits.getdata("fitsimage.fts")
 plt.imshow(imagedata, cmap = 'gray', vmin = 2400, vmax = 2700)  #the vmin and vmax were set based on the location of the center of the star
 plt.show()                                                      #shows the image
 
-    
 
+#image_hist = plt.hist(imagedata.flatten(), bins='auto')
+#This is how I found the min and max of the image. 
 
 
 
