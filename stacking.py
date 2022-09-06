@@ -20,7 +20,11 @@ hdu.writeto(outfile, overwrite = True)      #writing stacked fits files
 imagedata = fits.getdata("fitsimage.fts")    
 plt.imshow(imagedata, cmap = 'gray', vmin = 2400, vmax = 2700)  #the vmin and vmax were set based on the location of the center of the star
 plt.show()                                                      #shows the image
-
+#print(imagedata[4,4]) 
+#maxval = np.max(imagedata)
+#maxloc = np.where(imagedata = 65535, x, y)
+#print(maxloc)  
+             #remember that pixel coordinates(x,y) are in the form of (y,x) for numpy array
 
 #image_hist = plt.hist(imagedata.flatten(), bins='auto')
 #This is how I found the min and max of the image. 
