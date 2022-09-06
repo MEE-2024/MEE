@@ -170,100 +170,33 @@ def mount_movement_control(RA, DEC):
 
 def camera_control():
     #The purpose of this function is to control camera connectivity, taking pictures and sending FITS data to data processing function
-    
     stacy.Connected = True
-    while stacy.Connected == True:
-        print("The Camera is alive!")
-        print(f"Current Camera State: {stacy.CameraState}")
-        print(f"Sensor Name: {stacy.SensorName}, Sensor Type: {stacy.SensorType}")
-        print(f"Current CCD Temp: {stacy.CCDTemperature}")
-        print(f"Cooler is on: {stacy.CoolerOn}")
-        print(f"Current CCD Gain: {stacy.ElectronsPerADU}")
-        print(f"CCD Pixel Size: X = {stacy.PixelSizeX}, Y = {stacy.PixelSizeY}")
-        #print(f"Image Array of Integers containing exposure pixel values {stacy.ImageArray}")
-        stacy.StartExposure(2.0,True)
-        print(f"Current Camera State: {stacy.CameraState}")
-        stacy.StopExposure()
-        print(f"Current Camera State: {stacy.CameraState}")
+    print(stacy.Connected)
+    stacy.BinX = 1
+    stacy.BinY = 1
+    #Assure full frame after binning change
+    stacy.StartX = 0
+    stacy.StartY = 0
+    stacy.NumX = stacy.CameraXSize // stacy.BinX #int type
+    stacy.NumY = stacy.CameraYSize // stacy.BinY
+    input("Press Enter to Continue")
+    print(f"Current Camera State: {stacy.CameraState}")
+    print(f"Sensor Name: {stacy.SensorName}, Sensor Type: {stacy.SensorType}")
+    print(f"Current CCD Temp: {stacy.CCDTemperature}")
+    #print(f"Current Camera Heat Sink Temp: {stacy.HeatSinkTemperature}")
+    print(f"Cooler is on: {stacy.CoolerOn}")
+    print(f"Current CCD Gain: {stacy.ElectronsPerADU}")
+    print(f"CCD Pixel Size: X = {stacy.PixelSizeX}, Y = {stacy.PixelSizeY}")
 
-        input("Press Enter To Take Exposure")
+    imgs_collected = input("Please Input the amount of continuous images you want taken")
+    img_exposure_time = input("Please input exposure time (sec): ")
+    img_file_name = ""
 
-        stacy.BinX = 1
-        stacy.BinY = 1
-        #Assure full frame after binning change
-        stacy.StartX = 0
-        stacy.StartY = 0
-        stacy.NumX = stacy.CameraXSize // stacy.BinX #int type
-        stacy.NumY = stacy.CameraYSize // stacy.BinY
-        #
-        #Acquire a light image, wait while printing % complete
-        #
-        stacy.StartExposure(3.0, True)
-        while not stacy.ImageReady:
-            time.sleep(0.5)
-            print(f"Image Ready: {stacy.ImageReady}")
+    img_collected_count = 1
+    while img_collected_count > imgs_collected:
+        pass
 
-            #print(f"{stacy.PercentCompleted}")
-        stacy.StopExposure()
-        print(stacy.ImageReady)
-        print(f"BinX {stacy.BinX}")
-        print("Finished!")
-        #
-        #Image has been acquired, grab the image array and the metadata
-        #
-        img = stacy.ImageArray
-        imginfo = stacy.ImageArrayInfo
-        if imginfo.ImageElementType == ImageArrayElementTypes.Int32: #this int32 part may need to be adjusted per camera
-            if stacy.MaxADU <= 65535:
-                imgDataType = np.uint16
-            else:
-                imgDataType = np.int32
-        elif imginfo.ImageElementType == ImageArrayElementTypes.Double:
-            imgDataType = np.float64
-        #
-        #Make a numpy array of the corract shape for astropy.io.fits
-        #
-        if imginfo.Rank == 2:
-            nda = np.array(img,dtype=imgDataType).transpose()
-        else:
-            nda = np.array(img, dtype=imgDataType).transpose(2,1,0)
-        #
-        #Create the FITS header and common FITS fields
-        #
-        hdr = fits.Header()
-        hdr["Comment"] = "Fits (Flexible Image Transport System) format defined in Astronomy and"
-        hdr["Comment"] = "Astrophysics Supplement Series v44/p363, v44/p371, v73/p359, v73/p365."
-        hdr["Comment"] = "Contact the NASA Science Office of Standards and Technology for the"
-        hdr["Comment"] = "FITS Definition document #100 and other FITS information"
-
-        if imgDataType == np.uint16:
-            hdr["BZERO"] = 32768.0
-            hdr["BSCALE"] = 1.0
-        #hdr["Exposure"] = stacy.LastExposureDuration
-        #hdr["EXPTIME"] = stacy.LastExposureDuration
-        #hdr["DATE-OBS"] = stacy.LastExposureStartTime
-        #hdr["TIMESYS"] = "PST"
-        hdr["XBINNING"] = stacy.BinX
-        hdr["YBINNING"] = stacy.BinY
-        hdr["INSTRUME"] = stacy.SensorName #sensor type instead?
-        hdr["GAIN"] = stacy.Gain#try
-        #excet pass
-        #hdr["OFFSET"] = stacy.Offset #try
-        #if type(stacy.Offset == int):
-            #hdr["PEDESTAL"] = stacy.Offset
-        #except pass
-
-        hdr["HISTORY"] = "Created using Python alpyca-client library"
-        #
-        # Create the final FITS from the numpy array FITS info
-        #
-        hdu = fits.PrimaryHDU(nda, header = hdr)
-        #possible problem stems at file write
-        img_file = f"{os.getenv('USERPROFILE')}/Desktop/test.fts"
-        hdu.writeto(img_file, overwrite = True)
-        #print(img)
-        input("press enter to finish")
-        stacy.Connected = False
+    
     print("IMAGE COLLECTED!")
         
         
