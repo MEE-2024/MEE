@@ -4,7 +4,11 @@ import celelib_v_0_3
 def libraryloader():
 
     diction = {}
+<<<<<<< HEAD
     with open(r"C:\Users\gourl\OneDrive\Desktop\mee2024\Celestialibrary_v_0_3.txt", 'r') as library: #reads textfile in location
+=======
+    with open("Celestialibrary_v_0_3.txt", 'r') as library: #reads textfile in location
+>>>>>>> 1f6d1b38f7d5d835c704a137ccc282f7c5eb2ada
         for line in library: #forloop will iterate through each line in the library which is every dataset
             keyval = line.split(':') #split string from : to separate string key and string value
             diction[keyval[0]] = keyval[1] #assigns string key and value into dictionary key and value
