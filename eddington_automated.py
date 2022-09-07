@@ -1,6 +1,6 @@
 #Custom Imports
-import celelib_v_0_3
-import celelibloader_v_0_3
+import celelib
+import celelibloader
 
 import time
 import os
@@ -112,8 +112,8 @@ def user_validation_station(validate_choice):
     
     elif user_choice == "2":
         print("Library of Coordinates")
-        celelibloader_v_0_3.libraryloader()
-        from celelibloader_v_0_3 import Ra,Dec
+        celelibloader.libraryloader()
+        from celelibloader import Ra,Dec
         mount_movement_control(Ra, Dec)
 
     elif user_choice == "3":
@@ -209,7 +209,10 @@ def camera_control(exp_time,num_exps,file_name):
     print(f"Max Camera ADU: {stacy.MaxADU}")
     
     input("Press Enter to Begin Captures")
-
+    title = input("Enter title of the fits file folder: ")
+    main_dir = "D:"                             #Places folder into external flashdrive. Could be issue for Linux or MAC
+    dir = os.path.join(main_dir, title)
+    os.mkdir(dir)
     img_collected_count = 0
     while img_collected_count != imgs_collected:
         img_collected_count += 1
@@ -241,8 +244,9 @@ def camera_control(exp_time,num_exps,file_name):
         name_var = f"{img_file_name}_{img_collected_count}.fts"
         print(f"name of file: {name_var}")
         input("Press Enter to continue")
-        img_file = f"{os.getenv('USERPROFILE')}/Desktop/{name_var}"
-        hdu.writeto(img_file, overwrite = True)
+
+        img_file = os.path.join(dir, name_var)
+        hdu.writeto(img_file, overwrite = True)    #This overwrite = True could be a issue
         print(f"IMAGE {img_collected_count} COLLECTED!")
         #input("Press Enter for next exposure") #take out of final version, only here for testing
         time.sleep(2)
