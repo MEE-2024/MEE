@@ -18,12 +18,21 @@ hdu.writeto(outfile, overwrite = True)      #writing stacked fits files
 
 #This section allows us to see what the fits file looks like in python
 imagedata = fits.getdata("fitsimage.fts")    
+plt.imshow(imagedata, cmap = 'gray')  #the vmin and vmax were set based on the location of the center of the star
+#image_hist = plt.hist(imagedata.flatten(), bins='auto')
+#plt.show()                                                      #shows the image
 plt.imshow(imagedata, cmap = 'gray', vmin = 2400, vmax = 2700)  #the vmin and vmax were set based on the location of the center of the star
-plt.show()                                                      #shows the image
-#print(imagedata[4,4]) 
-#maxval = np.max(imagedata)
-#maxloc = np.where(imagedata = 65535, x, y)
-#print(maxloc)  
+plt.show()
+
+max = np.amax(imagedata)
+
+maxloc = np.where(imagedata  == max)
+print(max)
+
+x = maxloc[0]
+y = maxloc[1]
+print(imagedata[x,y])
+ 
              #remember that pixel coordinates(x,y) are in the form of (y,x) for numpy array
 
 #image_hist = plt.hist(imagedata.flatten(), bins='auto')
