@@ -19,7 +19,7 @@ while hello:
             rA = cele.ra.hour
             global deC
             deC = cele.dec.deg
-            print("Name of star:, name")
+            print("Name of star:", name)
             print("Right Ascension value:", rA)
             print("Declination values:", deC)
             values = rA, deC 
