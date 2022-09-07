@@ -187,15 +187,43 @@ def camera_control():
     print(f"CCD Pixel Size: X = {stacy.PixelSizeX}, Y = {stacy.PixelSizeY}")
 
     imgs_collected = input("Please Input the amount of continuous images you want taken")
-    img_exposure_time = input("Please input exposure time (sec): ")
+    img_exposure_time = float(input("Please input exposure time (float)(sec): "))
     img_file_name = ""
 
     img_collected_count = 1
     while img_collected_count > imgs_collected:
-        pass
+        img_collected_count += 1
+        stacy.StartExposure(img_exposure_time, True)
+        while not stacy.ImageReady:
+            time.sleep(0.5)
+            print(f"Image Ready: {stacy.ImageReady}")
+            print(f"Current Camera State: {stacy.CameraState}")
+            #print(f"{stacy.PercentCompleted}")
+        #stacy.StopExposure() #I don't think that this is needed when stacy.imageready is being used, automatically swithes camera to idle after while loop exit
+        print(f"Max Camera ADU: {stacy.MaxADU}")
+        input("Press Enter to Continue")
 
-    
-    print("IMAGE COLLECTED!")
+        img = stacy.ImageArray
+        imginfo = stacy.ImageArrayInfo
+        imgDataType = np.uint16
+        print(f"Image Rank: {imginfo.Rank}")
+        nda = np.array(img,dtype=imgDataType).transpose()
+
+        hdr = fits.Header()
+        hdr["Comment"] = "Fits (Flexible Image Transport System) format defined in Astronomy and"
+        hdr["Comment"] = "Astrophysics Supplement Series v44/p363, v44/p371, v73/p359, v73/p365."
+        hdr["Comment"] = "Contact the NASA Science Office of Standards and Technology for the"
+        hdr["Comment"] = "FITS Definition document #100 and other FITS information"
+
+        hdr["BZERO"] = 32768.0
+        hdr["BSCALE"] = 1.0
+
+        hdu = fits.PrimaryHDU(nda, header = hdr)
+        #possible problem stems at file write
+        img_file = f"{os.getenv('USERPROFILE')}/Desktop/test_9_6_1.fts"
+        hdu.writeto(img_file, overwrite = True)
+        print("IMAGE COLLECTED!")
+        input("Press Enter for next exposure") #take out of final version, only here for testing
         
         
         
