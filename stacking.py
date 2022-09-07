@@ -12,7 +12,7 @@ for filename in os.listdir(pathofdir):
     fitlist.append(fits.getdata(f))         #storing each file in "fits files" folder in the list
 
 finalimage = np.sum(fitlist, axis = 0)      #stacking fits files
-outfile = "fitsimage.fts"    #outfile relative path
+outfile = "fitsimage.fts"    #outfile relative path ##We may want to have a way to change the file name "use f" and make it an input?
 hdu = fits.PrimaryHDU(finalimage)           
 hdu.writeto(outfile, overwrite = True)      #writing stacked fits files 
 

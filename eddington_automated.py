@@ -27,11 +27,12 @@ def main_menu():
     while mm_flag == True:
         
         print("")
-        print("""Make a Selection:
+        print("""Make a Selection (int):
         1 - Slew to Position
         2 - Slew to Library Position
         3 - Slew to Home
         4 - Print Current DA/REC
+        5 - Camera Control
         x - Exit Program""")
 
         choice = input(">")
@@ -57,18 +58,25 @@ def main_menu():
             print(albert.RightAscension)
             print(albert.Declination)
             input("Press Enter To Return To Main Menu: ")
+        
+        elif choice == "5":
+            #send to validation station for passage to camera functions
+            print(choice)
+            user_validation_station(choice)
+
             
         elif choice.lower() == "x":
             print("Exit Program")
             #albert.Tracking = False
             #albert.Connected = False #Do I need this?
-            print(albert.Tracking) #This is the only place where the tracking is shut off
+            #print(albert.Tracking) #This is the only place where the tracking is shut off #I don't think I need this
             print(RA)
             print(DEC)
             mm_flag = False
             
         else:
             print("invalid input")
+            print("INT TYPE INPUT ONLY")
     
         
 def user_validation_station(validate_choice):
@@ -109,6 +117,7 @@ def user_validation_station(validate_choice):
         mount_movement_control(Ra, Dec)
 
     elif user_choice == "3":
+        #this needs work
         #returns mount to 0/0
         #send RA and DEC to mount movement control
         print("choice 3")
@@ -119,8 +128,24 @@ def user_validation_station(validate_choice):
             time.sleep(5)
             print("Doot... Doot... Doot...")
 
+    elif user_choice == "5":
+        greg = True
+        while greg == True:
+            #inputs for exposure time,amount of images captured,file name
+            exp_time = float(input("Please input exposure time (float)(sec): "))
+            if exp_time != type(float):
+                print(f"Invalid Input {exp_time}, please input a float (1.0) type value")
+            num_exps = int(input("Please Input the amount of continuous images you want taken: "))
+            if num_exps != type(int):
+                print(f"Invalid Input {num_exps}, please input an int (1) type value")
+            file_name = str(input("Input file names (use _ for spaces): "))
+            if file_name != type(str):
+                print(f"Invalid Input {file_name}, please input a string ('crapapple') type value")
+            greg = False
+        camera_control(exp_time,num_exps,file_name)
+
     else:
-        print("AGGGGGGHHHHH!")
+        print("AGGGGGGHHHHH! HOW DID YOU GET HERE????")
 
 
 def mount_movement_control(RA, DEC):
@@ -146,30 +171,26 @@ def mount_movement_control(RA, DEC):
             print("Doot... Doot... Doot...")
         #This is where a call to camera function would be
         print("Mount has been moved")
-        print()
-        print("""Would you like to continue?
-        1 - Slew To New Location
-        2 - Camera Operations
-        x - Back To Main Menu""")
-        user_slew_choice = input(">")
-        if user_slew_choice == "1":
-            main_menu()
-        elif user_slew_choice == "2":
-            print("Camera Controls")
-            camera_control()
-        #elif camera functions go here
-        elif user_slew_choice.lower() == "x":
-            print("Back To Main Menu")
-            break
-        else:
-            print("returning to main menu")
-            main_menu()
+        print("returning to main menu...")
+        time.sleep(2)
+        main_menu()
         
 
-def camera_control():
-    #The purpose of this function is to control camera connectivity, taking pictures and sending FITS data to data processing function
+def camera_control(exp_time,num_exps,file_name):
+    """The purpose of this function is to control all camera functionality including exposure, 
+    FITS image mapping, file naming and saving"""
+    ##################################
+    #Exposure Specification Variables#
+    ##################################
+    img_exposure_time = exp_time
+    imgs_collected = num_exps
+    img_file_name = file_name
+
+    ###################
+    #Camera Operations#
+    ###################
     stacy.Connected = True
-    print(stacy.Connected)
+    print(f"Camera Connection: {stacy.Connected}")
     stacy.BinX = 1
     stacy.BinY = 1
     #Assure full frame after binning change
@@ -185,13 +206,12 @@ def camera_control():
     print(f"Cooler is on: {stacy.CoolerOn}")
     print(f"Current CCD Gain: {stacy.ElectronsPerADU}")
     print(f"CCD Pixel Size: X = {stacy.PixelSizeX}, Y = {stacy.PixelSizeY}")
+    print(f"Max Camera ADU: {stacy.MaxADU}")
+    
+    input("Press Enter to Begin Captures")
 
-    imgs_collected = input("Please Input the amount of continuous images you want taken")
-    img_exposure_time = float(input("Please input exposure time (float)(sec): "))
-    img_file_name = ""
-
-    img_collected_count = 1
-    while img_collected_count > imgs_collected:
+    img_collected_count = 0
+    while img_collected_count != imgs_collected:
         img_collected_count += 1
         stacy.StartExposure(img_exposure_time, True)
         while not stacy.ImageReady:
@@ -200,8 +220,6 @@ def camera_control():
             print(f"Current Camera State: {stacy.CameraState}")
             #print(f"{stacy.PercentCompleted}")
         #stacy.StopExposure() #I don't think that this is needed when stacy.imageready is being used, automatically swithes camera to idle after while loop exit
-        print(f"Max Camera ADU: {stacy.MaxADU}")
-        input("Press Enter to Continue")
 
         img = stacy.ImageArray
         imginfo = stacy.ImageArrayInfo
@@ -220,20 +238,15 @@ def camera_control():
 
         hdu = fits.PrimaryHDU(nda, header = hdr)
         #possible problem stems at file write
-        img_file = f"{os.getenv('USERPROFILE')}/Desktop/test_9_6_1.fts"
+        name_var = f"{img_file_name}_{img_collected_count}.fts"
+        print(f"name of file: {name_var}")
+        input("Press Enter to continue")
+        img_file = f"{os.getenv('USERPROFILE')}/Desktop/{name_var}"
         hdu.writeto(img_file, overwrite = True)
-        print("IMAGE COLLECTED!")
-        input("Press Enter for next exposure") #take out of final version, only here for testing
-        
-        
-        
-
-
-
-
-
-    #After image is taken tracking and connectivity should probably be == False I think...
-    #user_validation_station()
+        print(f"IMAGE {img_collected_count} COLLECTED!")
+        #input("Press Enter for next exposure") #take out of final version, only here for testing
+        time.sleep(2)
+        main_menu()
 
 
 #vroom vroom engine
