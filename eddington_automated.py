@@ -220,13 +220,13 @@ def camera_control(exp_time,num_exps,file_name):
     print(f"Current CCD Temp: {stacy.CCDTemperature}")
     #print(f"Current Camera Heat Sink Temp: {stacy.HeatSinkTemperature}")
     print(f"Cooler is on: {stacy.CoolerOn}")
-    print(f"Current CCD Gain: {stacy.ElectronsPerADU}")
+    print(f"Current CCD Gain: {stacy.Gain}")
     print(f"CCD Pixel Size: X = {stacy.PixelSizeX}, Y = {stacy.PixelSizeY}")
     print(f"Max Camera ADU: {stacy.MaxADU}")
     
     input("Press Enter to Begin Captures")
     
-    img_collected_count = 0
+    '''img_collected_count = 0
     while img_collected_count != imgs_collected:
         img_collected_count += 1
         stacy.StartExposure(img_exposure_time, True)
@@ -236,6 +236,7 @@ def camera_control(exp_time,num_exps,file_name):
             #print(f"Current Camera State: {stacy.CameraState}")
             #print(f"{stacy.PercentCompleted}")
         stacy.StopExposure() #I don't think that this is needed when stacy.imageready is being used, automatically swithes camera to idle after while loop exit
+'''
 ###########################################################################
     img_collected_count = 0                            #image count is 0 to start
     while img_collected_count != imgs_collected:       #while collected count does NOT equal image collected
