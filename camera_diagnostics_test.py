@@ -43,12 +43,12 @@ def camera_test():
     while img_collected_count != imgs_collected:
         img_collected_count += 1
         stacy.StartExposure(img_exposure_time, True)
-        while not stacy.ImageReady:
-            time.sleep(0.5)
-            print(f"Image Ready: {stacy.ImageReady}")
-            print(f"Current Camera State: {stacy.CameraState}")
+        #while not stacy.ImageReady:
+        time.sleep(img_exposure_time)
+            #print(f"Image Ready: {stacy.ImageReady}")
+            #print(f"Current Camera State: {stacy.CameraState}")
             #print(f"{stacy.PercentCompleted}")
-        #stacy.StopExposure() #I don't think that this is needed when stacy.imageready is being used, automatically swithes camera to idle after while loop exit
+        stacy.StopExposure() #I don't think that this is needed when stacy.imageready is being used, automatically swithes camera to idle after while loop exit
 
         img = stacy.ImageArray
         imginfo = stacy.ImageArrayInfo
