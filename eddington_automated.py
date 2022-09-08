@@ -19,8 +19,8 @@ import astropy.io.fits as fits
 
 albert = Telescope('192.168.1.47:11111',0)
 stacy = Camera('192.168.1.47:11111',0)
-stacy.GainMin = 29
-stacy.GainMax = 31
+stacy.Gain = 30
+
 RA = albert.RightAscension
 DEC = albert.Declination
 albert.Tracking = True
