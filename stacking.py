@@ -4,7 +4,7 @@ def stacking():
     import matplotlib.pyplot as plt
     from astropy.io import fits
     import os
-    from eddington_automated import dir 
+    from eddington_automated import folderpath
     from eddington_automated import title
 
     fitlist = []                                #creating list of fits files to stack
