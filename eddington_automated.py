@@ -19,7 +19,8 @@ import astropy.io.fits as fits
 
 albert = Telescope('192.168.1.47:11111',0)
 stacy = Camera('192.168.1.47:11111',0)
-stacy.Gain = 30
+stacy.GainMin = 29
+stacy.GainMax = 31
 RA = albert.RightAscension
 DEC = albert.Declination
 albert.Tracking = True
@@ -75,7 +76,7 @@ def main_menu():
             #print(albert.Tracking) #This is the only place where the tracking is shut off #I don't think I need this
             print(RA)
             print(DEC)
-            mm_flag = False
+            quit()
             
         else:
             print("invalid input")
@@ -143,16 +144,20 @@ def user_validation_station(validate_choice):
             if num_exps != type(int):
                 print(f"Invalid Input {num_exps}, please input an int (1) type value")
 
-            title = input("Enter title of the fits file folder: ")
-            main_dir = "D:"                             #Places folder into external flashdrive. Could be issue for Linux or MAC
-            #dir = os.path.join(main_dir, title)
-            #os.mkdir(dir)
-
+            
 
             file_name = str(input("Input file names (use _ for spaces): "))
             if file_name != type(str):
                 print(f"Invalid Input {file_name}, please input a string ('crapapple') type value")
             greg = False
+#######################################################################################################
+            main_dir = "D:"
+            title = file_name                             #Places folder into external flashdrive. Could be issue for Linux or MAC
+            dir = os.path.join(main_dir, title)           #create path using D:\ + "filename"
+            os.mkdir(dir)      
+            global folderpath                               #creates folder in dir path
+            folderpath = os.path.abspath(dir)               #folderpath is the exact path    
+########################################################################################################        
         camera_control(exp_time,num_exps,file_name)
 
     else:
@@ -231,14 +236,48 @@ def camera_control(exp_time,num_exps,file_name):
             #print(f"Current Camera State: {stacy.CameraState}")
             #print(f"{stacy.PercentCompleted}")
         stacy.StopExposure() #I don't think that this is needed when stacy.imageready is being used, automatically swithes camera to idle after while loop exit
-
-        img = stacy.ImageArray
+###########################################################################
+    img_collected_count = 0                            #image count is 0 to start
+    while img_collected_count != imgs_collected:       #while collected count does NOT equal image collected
+        img_collected_count += 1                       #Adds 1 to image count per iteration of while loop
+        stacy.StartExposure(img_exposure_time, True)   #exposure for camera has started
+        time_passed = 0
+        while stacy.ImageReady == False:               #whileloop until exposure is done
+            time.sleep(0.1)                            #will check to see if exposure is completed
+            time_passed += 0.1
+            if time_passed >= 60:
+                print("ERROR. Image is taking too long to be ready")
+                break 
+            else:
+                pass
+        
+        
+        img = stacy.ImageArray                         #seting image as multidimensial array of pixel values
         imginfo = stacy.ImageArrayInfo
         imgDataType = np.uint16
         print(f"Image Rank: {imginfo.Rank}")
-        nda = np.array(img,dtype=imgDataType).transpose()
-
+        nda = np.array(img,dtype=imgDataType).transpose() #converting array into numpy format
         hdr = fits.Header()
+        hdr["Comment"] = "Fits (Flexible Image Transport System) format defined in Astronomy and"
+        hdr["Comment"] = "Astrophysics Supplement Series v44/p363, v44/p371, v73/p359, v73/p365."
+        hdr["Comment"] = "Contact the NASA Science Office of Standards and Technology for the"
+        hdr["Comment"] = "FITS Definition document #100 and other FITS information"
+
+        hdr["BZERO"] = 32768.0
+        hdr["BSCALE"] = 1.0
+
+        hdu = fits.PrimaryHDU(nda, header = hdr)      #converting data into fits file format
+        #possible problem stems at file write
+        name_var = f"{img_file_name}_{img_collected_count}.fts"   #name of fits file
+        print(f"name of file: {name_var}")
+        main_dir = "D:" 
+        img_file = os.path.join(folderpath, name_var)
+        hdu.writeto(img_file, overwrite = True)    #This overwrite = True could be a issue
+        print(f"IMAGE {img_collected_count} COLLECTED!")
+        time.sleep(2)
+    main_menu()
+##################################################################################################
+    ''' hdr = fits.Header()
         hdr["Comment"] = "Fits (Flexible Image Transport System) format defined in Astronomy and"
         hdr["Comment"] = "Astrophysics Supplement Series v44/p363, v44/p371, v73/p359, v73/p365."
         hdr["Comment"] = "Contact the NASA Science Office of Standards and Technology for the"
@@ -259,6 +298,7 @@ def camera_control(exp_time,num_exps,file_name):
         #input("Press Enter for next exposure") #take out of final version, only here for testing
         time.sleep(2)
         main_menu()
+        '''
 
 
 #vroom vroom engine
@@ -283,3 +323,4 @@ while running == True:
     print("Beep Boop Bop Beep")
     print("Welcome To Telescope Controls")
     running = main_menu()
+
