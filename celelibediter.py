@@ -142,7 +142,7 @@ def celestialibrary():
 
 
     values = RAconv, DECconv 
-    with open("Celestialibrary_v_0_3.txt", 'a') as library: #a is append, w is write, r is read
+    with open("Celestialibrary.txt", 'a') as library: #a is append, w is write, r is read
                 library.write('%s:%s\n' % (namecel, values)) 
     UIcel() #Prompts user to loop through or to add new data.   
     #print("Done.")

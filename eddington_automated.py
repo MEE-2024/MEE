@@ -1,3 +1,5 @@
+#Hey dumbass, you forgot to input gain
+
 #Custom Imports
 import celelib
 import celelibloader
@@ -17,9 +19,10 @@ import astropy.io.fits as fits
 
 albert = Telescope('192.168.1.47:11111',0)
 stacy = Camera('192.168.1.47:11111',0)
+stacy.Gain = 30
 RA = albert.RightAscension
 DEC = albert.Declination
-
+albert.Tracking = True
 def main_menu():
     #This function is the central hub for the user
     #Function finds out what type of input the user would like to input
@@ -104,9 +107,10 @@ def user_validation_station(validate_choice):
                 #limits of this if statement may need to be vars that can be altered per each location prog is being used
                 #send to mount movement control
                 print("Declination Recieved")
+                deciding_location = False
             else:
                 print("invalid response")
-            break
+
         #Send RA/DEC to mount control for slewing
         mount_movement_control(RA,DEC)
     
@@ -138,6 +142,13 @@ def user_validation_station(validate_choice):
             num_exps = int(input("Please Input the amount of continuous images you want taken: "))
             if num_exps != type(int):
                 print(f"Invalid Input {num_exps}, please input an int (1) type value")
+
+            title = input("Enter title of the fits file folder: ")
+            main_dir = "D:"                             #Places folder into external flashdrive. Could be issue for Linux or MAC
+            #dir = os.path.join(main_dir, title)
+            #os.mkdir(dir)
+
+
             file_name = str(input("Input file names (use _ for spaces): "))
             if file_name != type(str):
                 print(f"Invalid Input {file_name}, please input a string ('crapapple') type value")
@@ -155,21 +166,21 @@ def mount_movement_control(RA, DEC):
     print(RA)
     print(DEC)
     operation = True
-    while operation is True:
+    while operation == True:
         #Function moves telescope to desired location
-        input("Press Enter to Begin Slew")
+        #input("Press Enter to Begin Slew")
         #This is where the magic happens
         
-        albert.SlewToCoordinatesAsync(RightAscension=RA, Declination=DEC)
         print(f"RA = {albert.RightAscension}, DEC = {albert.Declination}")
         #Checking when slew is finished every 1 sec
+        albert.SlewToCoordinatesAsync(RightAscension=RA, Declination=DEC)
         while(albert.Slewing):
             time.sleep(1)
-            albert.Tracking = True
             print(albert.RightAscension)
             print(albert.Declination)
             print("Doot... Doot... Doot...")
         #This is where a call to camera function would be
+        albert.Tracking = True
         print("Mount has been moved")
         print("returning to main menu...")
         time.sleep(2)
@@ -209,20 +220,17 @@ def camera_control(exp_time,num_exps,file_name):
     print(f"Max Camera ADU: {stacy.MaxADU}")
     
     input("Press Enter to Begin Captures")
-    title = input("Enter title of the fits file folder: ")
-    main_dir = "D:"                             #Places folder into external flashdrive. Could be issue for Linux or MAC
-    dir = os.path.join(main_dir, title)
-    os.mkdir(dir)
+    
     img_collected_count = 0
     while img_collected_count != imgs_collected:
         img_collected_count += 1
         stacy.StartExposure(img_exposure_time, True)
-        while not stacy.ImageReady:
-            time.sleep(0.5)
-            print(f"Image Ready: {stacy.ImageReady}")
-            print(f"Current Camera State: {stacy.CameraState}")
+        #while not stacy.ImageReady:
+        time.sleep(img_exposure_time)
+            #print(f"Image Ready: {stacy.ImageReady}")
+            #print(f"Current Camera State: {stacy.CameraState}")
             #print(f"{stacy.PercentCompleted}")
-        #stacy.StopExposure() #I don't think that this is needed when stacy.imageready is being used, automatically swithes camera to idle after while loop exit
+        stacy.StopExposure() #I don't think that this is needed when stacy.imageready is being used, automatically swithes camera to idle after while loop exit
 
         img = stacy.ImageArray
         imginfo = stacy.ImageArrayInfo
@@ -244,8 +252,8 @@ def camera_control(exp_time,num_exps,file_name):
         name_var = f"{img_file_name}_{img_collected_count}.fts"
         print(f"name of file: {name_var}")
         input("Press Enter to continue")
-
-        img_file = os.path.join(dir, name_var)
+        main_dir = "D:" 
+        img_file = os.path.join(main_dir, name_var)
         hdu.writeto(img_file, overwrite = True)    #This overwrite = True could be a issue
         print(f"IMAGE {img_collected_count} COLLECTED!")
         #input("Press Enter for next exposure") #take out of final version, only here for testing
