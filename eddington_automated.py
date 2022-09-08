@@ -306,6 +306,7 @@ def camera_control(exp_time,num_exps,file_name):
 running = True
 while running == True:
     albert.Connected == True
+    print(f"Can set Tracking: {albert.CanSetTracking}")
     print(f"Telescope Connection Made: {albert.Connected}")
     print(f"Telescope Connection: {albert.Name}")
     print(f"Telescope Description: {albert.Description}")
