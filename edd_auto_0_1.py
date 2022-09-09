@@ -222,8 +222,9 @@ def camera_control(exp_time,num_exps,file_name):
     
     img_collected_count = 0                            #image count is 0 to start
     while img_collected_count != imgs_collected:       #while collected count does NOT equal image collected
-        img_collected_count += 1                       #Adds 1 to image count per iteration of while loop
-        stacy.StartExposure(img_exposure_time, True)   #exposure for camera has started
+        img_collected_count += 1  
+        #true for night, false for day                     #Adds 1 to image count per iteration of while loop
+        stacy.StartExposure(img_exposure_time, False)   #exposure for camera has started
         time_passed = 0
         while stacy.ImageReady == False:               #whileloop until exposure is done
             time.sleep(0.1)                            #will check to see if exposure is completed
@@ -240,7 +241,7 @@ def camera_control(exp_time,num_exps,file_name):
         
         img = stacy.ImageArray                         #seting image as multidimensial array of pixel values
         imginfo = stacy.ImageArrayInfo
-        imgDataType = np.uint16
+        imgDataType = np.uint64
         #add variable that looks for type of camera nad auto inputs it
 
         nda = np.array(img,dtype=imgDataType).transpose() #converting array into numpy format
