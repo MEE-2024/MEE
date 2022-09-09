@@ -1,4 +1,4 @@
-#Hey dumbass, you forgot to input gain
+
 
 #Custom Imports
 import celelib
@@ -305,8 +305,12 @@ def camera_control(exp_time,num_exps,file_name):
 #vroom vroom engine
 running = True
 while running == True:
+<<<<<<< HEAD
     #albert.Connected = True
     print(f"Can set Tracking: {albert.CanSetTracking}")
+=======
+    albert.Connected == True
+>>>>>>> 03e5497760598a34fe05994903c91bca5cc96948
     print(f"Telescope Connection Made: {albert.Connected}")
     print(f"Telescope Connection: {albert.Name}")
     print(f"Telescope Description: {albert.Description}")
