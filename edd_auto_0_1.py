@@ -19,7 +19,7 @@ albert = Telescope('192.168.1.47:11111',0)
 stacy = Camera('192.168.1.47:11111',0)
 RA = albert.RightAscension
 DEC = albert.Declination
-#stacy.Gain = 30
+stacy.Gain = 30
 
 def tracking_rates():
     print("""
@@ -179,7 +179,7 @@ def user_validation_station(validate_choice):
                 greg = False
             else:                                        
                 print("INVALID INPUT")
-            main_dir = "D:"
+            main_dir = "C:"
             title = file_name                               #Places folder into external flashdrive. Could be issue for Linux or MAC
             dir = os.path.join(main_dir, title)            #create path using D:\ + "filename"
             os.mkdir(dir)      
