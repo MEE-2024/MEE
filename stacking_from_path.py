@@ -37,7 +37,8 @@ def stacking():
     maxloc = np.where(imagedata  == max)
     print(f"Max pixel intensity value:{max}")
     print(f"Location of max pixel: {maxloc}")
-
+    image_hist = plt.hist(imagedata.flatten(), bins='auto')  #use this to define vmin and vmax
+    plt.show()
 
 
 
@@ -47,3 +48,5 @@ def stacking():
     #print(imagedata[x,y])
     
     #remember that pixel coordinates(x,y) are in the form of (y,x) for numpy array
+
+stacking()
