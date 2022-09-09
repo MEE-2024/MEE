@@ -19,8 +19,8 @@ import astropy.io.fits as fits
 
 albert = Telescope('192.168.1.47:11111',0)
 stacy = Camera('192.168.1.47:11111',0)
-stacy.GainMin = 29
-stacy.GainMax = 31
+#stacy.Gain = 30
+
 RA = albert.RightAscension
 DEC = albert.Declination
 albert.Tracking = True
@@ -305,11 +305,16 @@ def camera_control(exp_time,num_exps,file_name):
 #vroom vroom engine
 running = True
 while running == True:
+<<<<<<< HEAD
+    #albert.Connected = True
+    print(f"Can set Tracking: {albert.CanSetTracking}")
+=======
     albert.Connected == True
+>>>>>>> 03e5497760598a34fe05994903c91bca5cc96948
     print(f"Telescope Connection Made: {albert.Connected}")
     print(f"Telescope Connection: {albert.Name}")
     print(f"Telescope Description: {albert.Description}")
-    albert.Tracking = True
+    #albert.Tracking = True
     print(f"Tracking On: {albert.Tracking}")
     print(f"Current Tracking Rate: {albert.TrackingRate}")
     print("""
@@ -323,5 +328,5 @@ while running == True:
 
     print("Beep Boop Bop Beep")
     print("Welcome To Telescope Controls")
-    running = main_menu()
+    main_menu()
 
