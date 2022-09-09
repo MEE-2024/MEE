@@ -1,4 +1,4 @@
-#Hey dumbass, you forgot to input gain
+
 
 #Custom Imports
 import celelib
