@@ -32,7 +32,18 @@ def stacking():
             response()
 
     response()
+    #possible ways to find pixel location of stars
+    max = np.amax(imagedata)
+    maxloc = np.where(imagedata  == max)
+    print(f"Max pixel intensity value:{max}")
+    print(f"Location of max pixel: {maxloc}")
 
 
 
-stacking()
+
+
+    #x = maxloc[0]
+    #y = maxloc[1]
+    #print(imagedata[x,y])
+    
+    #remember that pixel coordinates(x,y) are in the form of (y,x) for numpy array
