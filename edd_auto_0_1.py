@@ -179,12 +179,7 @@ def user_validation_station(validate_choice):
                 greg = False
             else:                                        
                 print("INVALID INPUT")
-<<<<<<< HEAD
             main_dir = "C:"
-=======
-            #prompt user input for partution directory(windows, linux, MACos) 
-            main_dir = "D:"
->>>>>>> 398b2864999a49cbdfbbd8b9a2863932169ae294
             title = file_name                               #Places folder into external flashdrive. Could be issue for Linux or MAC
             dir = os.path.join(main_dir, title)            #create path using D:\ + "filename"
             os.mkdir(dir)      
