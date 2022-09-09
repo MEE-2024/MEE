@@ -37,7 +37,15 @@ def tracking_rates():
     else:
         print("ERROR. This was not a choice. Try again.")
         tracking_rates()
-    
+
+def camera_info():
+        print(f"Current Camera State: {stacy.CameraState}")
+        print(f"Sensor Name: {stacy.SensorName}, Sensor Type: {stacy.SensorType}")
+        print(f"Current CCD Temp: {stacy.CCDTemperature}")
+        print(f"Cooler is on: {stacy.CoolerOn}")
+        print(f"Current CCD Gain: {stacy.Gain}")
+        print(f"CCD Pixel Size: X = {stacy.PixelSizeX}, Y = {stacy.PixelSizeY}")
+        print(f"Max Camera ADU: {stacy.MaxADU}")
 
 def main_menu():
     #This function is the central hub for the user
@@ -168,14 +176,12 @@ def user_validation_station(validate_choice):
             file_name = str(input("Input file names (use _ for spaces): "))
             if file_name == type(str):
                 print(f"The file name is: {file_name}")
-            else:
-                print("INVALID INPUT")
-                
                 greg = False
-#######################################################################################################
+            else:                                        
+                print("INVALID INPUT")
             main_dir = "D:"
-            title = file_name                             #Places folder into external flashdrive. Could be issue for Linux or MAC
-            dir = os.path.join(main_dir, title)           #create path using D:\ + "filename"
+            title = file_name                               #Places folder into external flashdrive. Could be issue for Linux or MAC
+            dir = os.path.join(main_dir, title)            #create path using D:\ + "filename"
             os.mkdir(dir)      
             global folderpath                               #creates folder in dir path
             folderpath = os.path.abspath(dir)               #folderpath is the exact path    
@@ -217,7 +223,7 @@ def camera_control(exp_time,num_exps,file_name):
     ###################
     #Camera Operations#
     ###################
-    stacy.Connected = True
+    #stacy.Connected = True
     print(f"Camera Connection: {stacy.Connected}")
     stacy.BinX = 1
     stacy.BinY = 1
@@ -226,30 +232,9 @@ def camera_control(exp_time,num_exps,file_name):
     stacy.StartY = 0
     stacy.NumX = stacy.CameraXSize // stacy.BinX #int type
     stacy.NumY = stacy.CameraYSize // stacy.BinY
-    input("Press Enter to Continue")
-    print(f"Current Camera State: {stacy.CameraState}")
-    print(f"Sensor Name: {stacy.SensorName}, Sensor Type: {stacy.SensorType}")
-    print(f"Current CCD Temp: {stacy.CCDTemperature}")
-    #print(f"Current Camera Heat Sink Temp: {stacy.HeatSinkTemperature}")
-    print(f"Cooler is on: {stacy.CoolerOn}")
-    print(f"Current CCD Gain: {stacy.Gain}")
-    print(f"CCD Pixel Size: X = {stacy.PixelSizeX}, Y = {stacy.PixelSizeY}")
-    print(f"Max Camera ADU: {stacy.MaxADU}")
     
-    input("Press Enter to Begin Captures")
+    camera_info()
     
-    '''img_collected_count = 0
-    while img_collected_count != imgs_collected:
-        img_collected_count += 1
-        stacy.StartExposure(img_exposure_time, True)
-        #while not stacy.ImageReady:
-        time.sleep(img_exposure_time)
-            #print(f"Image Ready: {stacy.ImageReady}")
-            #print(f"Current Camera State: {stacy.CameraState}")
-            #print(f"{stacy.PercentCompleted}")
-        stacy.StopExposure() #I don't think that this is needed when stacy.imageready is being used, automatically swithes camera to idle after while loop exit
-'''
-###########################################################################
     img_collected_count = 0                            #image count is 0 to start
     while img_collected_count != imgs_collected:       #while collected count does NOT equal image collected
         img_collected_count += 1                       #Adds 1 to image count per iteration of while loop
@@ -260,7 +245,10 @@ def camera_control(exp_time,num_exps,file_name):
             time_passed += 0.1
             if time_passed >= 60:
                 print("ERROR. Image is taking too long to be ready")
-                break 
+                print("Unable to capture image.")
+                time.sleep(2)
+                print("¯\_ (ツ)_/¯")
+                main_menu() 
             else:
                 pass
         
