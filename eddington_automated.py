@@ -19,8 +19,8 @@ import astropy.io.fits as fits
 
 albert = Telescope('192.168.1.47:11111',0)
 stacy = Camera('192.168.1.47:11111',0)
-stacy.Gain = 30
-
+stacy.GainMin = 29
+stacy.GainMax = 31
 RA = albert.RightAscension
 DEC = albert.Declination
 albert.Tracking = True
@@ -306,7 +306,6 @@ def camera_control(exp_time,num_exps,file_name):
 running = True
 while running == True:
     albert.Connected == True
-    print(f"Can set Tracking: {albert.CanSetTracking}")
     print(f"Telescope Connection Made: {albert.Connected}")
     print(f"Telescope Connection: {albert.Name}")
     print(f"Telescope Description: {albert.Description}")
