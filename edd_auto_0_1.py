@@ -256,7 +256,8 @@ def camera_control(exp_time,num_exps,file_name):
         img = stacy.ImageArray                         #seting image as multidimensial array of pixel values
         imginfo = stacy.ImageArrayInfo
         imgDataType = np.uint16
-        print(f"Image Rank: {imginfo.Rank}")
+        #add variable that looks for type of camera nad auto inputs it
+
         nda = np.array(img,dtype=imgDataType).transpose() #converting array into numpy format
         hdr = fits.Header()
         hdr["Comment"] = "Fits (Flexible Image Transport System) format defined in Astronomy and"
@@ -270,36 +271,13 @@ def camera_control(exp_time,num_exps,file_name):
         hdu = fits.PrimaryHDU(nda, header = hdr)      #converting data into fits file format
         #possible problem stems at file write
         name_var = f"{img_file_name}_{img_collected_count}.fts"   #name of fits file
-        print(f"name of file: {name_var}")
-        main_dir = "D:" 
+        print(f"name of file: {name_var}") 
         img_file = os.path.join(folderpath, name_var)
-        hdu.writeto(img_file, overwrite = True)    #This overwrite = True could be a issue
+        img_file_path = os.path.abspath(img_file)
+        hdu.writeto(img_file_path, overwrite = True)    #This overwrite = True could be a issue
         print(f"IMAGE {img_collected_count} COLLECTED!")
-        time.sleep(2)
+
     main_menu()
-##################################################################################################
-    ''' hdr = fits.Header()
-        hdr["Comment"] = "Fits (Flexible Image Transport System) format defined in Astronomy and"
-        hdr["Comment"] = "Astrophysics Supplement Series v44/p363, v44/p371, v73/p359, v73/p365."
-        hdr["Comment"] = "Contact the NASA Science Office of Standards and Technology for the"
-        hdr["Comment"] = "FITS Definition document #100 and other FITS information"
-
-        hdr["BZERO"] = 32768.0
-        hdr["BSCALE"] = 1.0
-
-        hdu = fits.PrimaryHDU(nda, header = hdr)
-        #possible problem stems at file write
-        name_var = f"{img_file_name}_{img_collected_count}.fts"
-        print(f"name of file: {name_var}")
-        input("Press Enter to continue")
-        main_dir = "D:" 
-        img_file = os.path.join(main_dir, name_var)
-        hdu.writeto(img_file, overwrite = True)    #This overwrite = True could be a issue
-        print(f"IMAGE {img_collected_count} COLLECTED!")
-        #input("Press Enter for next exposure") #take out of final version, only here for testing
-        time.sleep(2)
-        main_menu()
-        '''
 
 
 #vroom vroom engine
