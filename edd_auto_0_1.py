@@ -22,9 +22,11 @@ DEC = albert.Declination
 stacy.Gain = 30
 
 def tracking_rates():
-    print("1 = star/planet")
-    print("2 = Sun")
-    print("3 = moon")
+    print("""
+    1 - star/planet
+    2 - sun
+    3 - moon
+    """)
     track_rate = input("Select the desired object for your tracking rate: ")
     if track_rate == "1":
         albert.TrackingRate = DriveRates.driveSidereal
@@ -35,9 +37,8 @@ def tracking_rates():
     else:
         print("ERROR. This was not a choice. Try again.")
         tracking_rates()
+    
 
-
-tracking_rates()
 def main_menu():
     #This function is the central hub for the user
     #Function finds out what type of input the user would like to input
@@ -83,13 +84,13 @@ def main_menu():
 
         
     elif choice.lower() == "x":
-        print("Exit Program")
-        #albert.Tracking = False
-        #albert.Connected = False #Do I need this?
-        #print(albert.Tracking) #This is the only place where the tracking is shut off #I don't think I need this
-        print(RA)
-        print(DEC)
+        print("Exiting Program")
+        albert.Tracking = False
+        albert.Connected = False
+        print(f"Current mount RA: {RA}")
+        print(f"Currnet mount DEC: {DEC}")
         running = False
+        
         
     else:
         print("invalid input")
@@ -144,7 +145,7 @@ def user_validation_station(validate_choice):
         albert.SlewToCoordinatesAsync(RightAscension=0.0000000000, Declination=0.0000000000)
         print(f"RA = {albert.RightAscension}, DEC = {albert.Declination}")
         while(albert.Slewing):
-            time.sleep(1)
+            time.sleep(0.5)
             print("Doot... Doot... Doot...")
 
     elif user_choice == "5":
@@ -179,31 +180,21 @@ def user_validation_station(validate_choice):
 
 
 def mount_movement_control(RA, DEC):
-    #USER_RA = RA
-    #USER_DEC = DEC
     print("You are at mount movement control")
-    print(RA)
-    print(DEC)
-    operation = True
-    while operation == True:
-        #Function moves telescope to desired location
-        #input("Press Enter to Begin Slew")
-        #This is where the magic happens
+    print(f"Current mount RA: {RA}")
+    print(f"Currnet mount DEC: {DEC}")
+    
+    albert.SlewToCoordinatesAsync(RightAscension=RA, Declination=DEC)
+    while(albert.Slewing):
+        time.sleep(1)
+        print(albert.RightAscension)
+        print(albert.Declination)
+        print("Doot... Doot... Doot...")
         
-        print(f"RA = {albert.RightAscension}, DEC = {albert.Declination}")
-        #Checking when slew is finished every 1 sec
-        albert.SlewToCoordinatesAsync(RightAscension=RA, Declination=DEC)
-        while(albert.Slewing):
-            time.sleep(1)
-            print(albert.RightAscension)
-            print(albert.Declination)
-            print("Doot... Doot... Doot...")
-        #This is where a call to camera function would be
-        albert.Tracking = True
-        print("Mount has been moved")
-        print("returning to main menu...")
-        time.sleep(2)
-        main_menu()
+    print("Mount has been moved")
+    print("returning to main menu...")
+    time.sleep(1)
+    main_menu()
         
 
 def camera_control(exp_time,num_exps,file_name):
@@ -317,6 +308,8 @@ def camera_control(exp_time,num_exps,file_name):
 
 
 #vroom vroom engine
+
+tracking_rates()
 running = True
 while running == True:
     albert.Connected == True
@@ -337,5 +330,5 @@ while running == True:
 
     print("Beep Boop Bop Beep")
     print("Welcome To Telescope Controls")
-    running = main_menu()
+    main_menu()     #we did something here. If problem occurs, check here
 
