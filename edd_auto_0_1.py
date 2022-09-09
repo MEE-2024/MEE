@@ -150,21 +150,28 @@ def user_validation_station(validate_choice):
 
     elif user_choice == "5":
         greg = True
+        #maybe nested while loops for exceptions
         while greg == True:
-            #inputs for exposure time,amount of images captured,file name
             exp_time = float(input("Please input exposure time (float)(sec): "))
-            if exp_time != type(float):
-                print(f"Invalid Input {exp_time}, please input a float (1.0) type value")
-            num_exps = int(input("Please Input the amount of continuous images you want taken: "))
-            if num_exps != type(int):
-                print(f"Invalid Input {num_exps}, please input an int (1) type value")
+            if exp_time == type(float):
+                print(f"Exposure time will be: {exp_time}")
+            else:
+                print("INVALID INPUT")
 
+            num_exps = int(input("Please Input the amount of continuous images you want taken: "))
             
+            if num_exps == type(int):
+                print(f"Number of images that will be taken: {num_exps}")
+            else:
+                print("INVALID INPUT")
 
             file_name = str(input("Input file names (use _ for spaces): "))
-            if file_name != type(str):
-                print(f"Invalid Input {file_name}, please input a string ('crapapple') type value")
-            greg = False
+            if file_name == type(str):
+                print(f"The file name is: {file_name}")
+            else:
+                print("INVALID INPUT")
+                
+                greg = False
 #######################################################################################################
             main_dir = "D:"
             title = file_name                             #Places folder into external flashdrive. Could be issue for Linux or MAC
