@@ -19,7 +19,7 @@ albert = Telescope('192.168.1.47:11111',0)
 stacy = Camera('192.168.1.47:11111',0)
 RA = albert.RightAscension
 DEC = albert.Declination
-stacy.Gain = 30
+#stacy.Gain = 30
 
 def tracking_rates():
     print("""
@@ -33,7 +33,7 @@ def tracking_rates():
     elif track_rate == "2":
         albert.TrackingRate = DriveRates.driveSolar
     elif track_rate == "3":
-        albert.TrackingRate = DriveRates.driveLunar
+        albert.TrackingRate = DriveRates.drivelunar
     else:
         print("ERROR. This was not a choice. Try again.")
         tracking_rates()
@@ -330,5 +330,5 @@ while running == True:
 
     print("Beep Boop Bop Beep")
     print("Welcome To Telescope Controls")
-    main_menu()     #we did something here. If problem occurs, check here
+    running = main_menu()     #we did something here. If problem occurs, check here
 
