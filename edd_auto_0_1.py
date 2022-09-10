@@ -20,6 +20,7 @@ stacy = Camera('192.168.1.47:11111',0)
 RA = albert.RightAscension
 DEC = albert.Declination
 stacy.Gain = 30
+stacy.CoolerOn = True
 
 def tracking_rates():
     print("""
