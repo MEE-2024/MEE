@@ -164,7 +164,7 @@ def user_validation_station(validate_choice):
         num_exps = int(input("Please Input the amount of continuous images you want taken: "))
         file_name = str(input("Input file names (use _ for spaces): "))
         
-        main_dir = "C:"
+        main_dir = "D:"
         title = file_name                               #Places folder into external flashdrive. Could be issue for Linux or MAC
         dir = os.path.join(main_dir, title)            #create path using D:\ + "filename"
         os.mkdir(dir)      
