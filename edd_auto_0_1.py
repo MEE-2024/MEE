@@ -20,6 +20,7 @@ stacy = Camera('192.168.1.47:11111',0)
 RA = albert.RightAscension
 DEC = albert.Declination
 stacy.Gain = 30
+stacy.CoolerOn = True
 
 def tracking_rates():
     print("""
@@ -33,7 +34,7 @@ def tracking_rates():
     elif track_rate == "2":
         albert.TrackingRate = DriveRates.driveSolar
     elif track_rate == "3":
-        albert.TrackingRate = DriveRates.drivelunar
+        albert.TrackingRate = DriveRates.driveLunar      #for some reason, on my end l in lunar must be capitalized
     else:
         print("ERROR. This was not a choice. Try again.")
         tracking_rates()
