@@ -164,7 +164,7 @@ def user_validation_station(validate_choice):
         num_exps = int(input("Please Input the amount of continuous images you want taken: "))
         file_name = str(input("Input file names (use _ for spaces): "))
         
-        main_dir = "D:"
+        main_dir = "C:"
         title = file_name                               #Places folder into external flashdrive. Could be issue for Linux or MAC
         dir = os.path.join(main_dir, title)            #create path using D:\ + "filename"
         os.mkdir(dir)      
@@ -224,7 +224,7 @@ def camera_control(exp_time,num_exps,file_name):
     while img_collected_count != imgs_collected:       #while collected count does NOT equal image collected
         img_collected_count += 1  
         #true for night, false for day                     #Adds 1 to image count per iteration of while loop
-        stacy.StartExposure(img_exposure_time, False)   #exposure for camera has started
+        stacy.StartExposure(img_exposure_time, True)   #exposure for camera has started
         time_passed = 0
         while stacy.ImageReady == False:               #whileloop until exposure is done
             time.sleep(0.1)                            #will check to see if exposure is completed
