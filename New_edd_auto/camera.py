@@ -11,8 +11,8 @@ def camera_load():
     hostname = socket.gethostname()
     IP_address = socket.gethostbyname(hostname)
     print(f"IP address of your private network:{IP_address}")
-    port = input("Input port number (11111): ")
-    IP_port = IP_address + ":" + port
+    port = 11111
+    IP_port = IP_address + ":" + str(port)
     print(IP_port)
 
     try:
@@ -26,9 +26,18 @@ def camera_load():
         stacy.StartY = 0
         stacy.NumX = stacy.CameraXSize // stacy.BinX #int type
         stacy.NumY = stacy.CameraYSize // stacy.BinY
+        print("Camera has successfully connected")
+        input("Press enter to continue")
     except Exception as e:
         print(f"Exception occured: {str(e)}")
         quit()
 
-    finally:
-        pass
+    
+
+
+    
+
+    
+
+    
+

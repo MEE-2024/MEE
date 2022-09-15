@@ -5,11 +5,13 @@ import numpy as np
 from alpaca.camera import *
 from alpaca.telescope import *
 from alpaca.exceptions import *
+from camera_settings import *
 from camera import *
 import astropy.io.fits as fits
 
 camera_load()
-
+from camera import stacy
+print()
 print(f"Camera driver: {stacy.Name}")
 print(f"Current Camera State: {stacy.CameraState}")
 print(f"Sensor Name: {stacy.SensorName}, Sensor Type: {stacy.SensorType}")
@@ -18,50 +20,27 @@ print(f"Cooler is on: {stacy.CoolerOn}")
 print(f"Current CCD Gain: {stacy.Gain}")
 print(f"CCD Pixel Size: X = {stacy.PixelSizeX}, Y = {stacy.PixelSizeY}")
 print(f"Max Camera ADU: {stacy.MaxADU}")
+print()
+print("daytime = 1")
+print("nighttime = 2")
+time_of_day = input("Will the camera be used in the daytime or the nighttime?>>> ")
+if time_of_day == "1":
+    camera_state = False 
+elif time_of_day == "2":
+    camera_state = True
 
 exp_time = float(input("Please input exposure time (float)(sec): "))
 num_exps = int(input("Please Input the amount of continuous images you want taken: "))
 file_name = str(input("Input file names (use _ for spaces): "))
-setting = True
-while setting == True:
-    settings = input("Have you entered the camera settings yet? (y/n): ")
-    if chr.lower(settings) == "y":
-        from camera_settings import camera_state            #this is importing the camera_state variable set in settings. Might not work
-        setting = False                                     #exits whileloop
-    elif chr.lower(settings) == "n":
-        camera_state = True                                 #default settings
-        setting = False
-    else:
-        print("INPUT ERROR. ONLY POSSIBLE CHOICES ARE 'y' OR 'n'.")
+
 
 #creating the directory of where images will be stored
-DRIVE = True
-while DRIVE == True:
-    print("c = local hard drive")
-    print("d = external hard drive")
-    dir_choice = input("Do you want to save image files to the local hard drive or an external hard drive? >>>")
-    if dir_choice.lower == "c":
-        main_dir = "C:"
-        DRIVE = False
-    elif dir_choice.lower == "d":
-        main_dir = "D:"
-        DRIVE = False
-    else:
-        print("INPUT ERROR. THAT WAS NOT A CHOICE!")
 
-
-
-
-
-
+   
+main_dir = "C:"
 dir = os.path.join(main_dir, file_name)             #joins the two paths of the main_dir and the file_name
 os.mkdir(dir)                                       #makes folder in location
 folderpath = os.path.abspath(dir)                   #folderpath is direct string of path(Ex: C:\user)
-
-
-
-
-
 
 img_collected_count = 0                            
 while img_collected_count != num_exps:                          #won't exit whileloop until img_collected_count == num_exps
@@ -105,5 +84,7 @@ while img_collected_count != num_exps:                          #won't exit whil
     img_file_path = os.path.abspath(img_file)             #write the absolute path into a variable
     hdu.writeto(img_file_path, overwrite = True)          #This overwrite = True could be a issue
     print(f"IMAGE {img_collected_count} COLLECTED!")
+
+print("Done")
 
 
