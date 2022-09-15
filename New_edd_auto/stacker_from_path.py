@@ -22,7 +22,7 @@ def stacking():
     hdu.writeto(stack_path, overwrite = True)      #writing stacked fits files 
 
     #This section allows us to see what the fits file looks like in python
-    imagedata = fits.getdata(outfile)   
+    imagedata = fits.getdata(stack_path)   
     def response():
         ans1 = input("Would you like to see a picture of the stacked fits file? (y/n): ") 
         if str.lower(ans1) == "y":
