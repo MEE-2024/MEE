@@ -7,18 +7,16 @@ from camera import *
 #In future, GUI would have choices of cameras with all of their data stored in it. 
 def camera_settings():
 
-    camera_load()
-    #from camera import stacy
+    camera_load()                                                                           #loads camera 
     yes = True
     while yes == True:
-        raw_gain = input("Input gain integer value for camera: ")
-        try:
+        raw_gain = input("Input gain integer value for camera: ")                           #try and except used to limit to integers
+        try:                                                                                 
             gain = abs(int(raw_gain))
             yes = False
         except:
             print("INPUT ERROR. GAIN CANNOT BE STRING OR FLOAT")    
-        finally:
-            pass
+
     print("daytime = 1")
     print("nighttime = 2")
     time_of_day = input("Will the camera be used in the daytime or the nighttime?>>> ")
@@ -26,7 +24,7 @@ def camera_settings():
         camera_state = False 
     elif time_of_day == "2":
         camera_state = True 
-    from camera import stacy
+    from camera import stacy                                                               #import camera stacy from camera module
     stacy.Gain = gain
     print(f"Camera driver: {stacy.Name}")
     print(f"Current Camera State: {stacy.CameraState}")
