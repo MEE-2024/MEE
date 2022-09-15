@@ -32,3 +32,6 @@ def camera_load():
     except Exception as e:
         print(f"Exception occured: {str(e)}")                   #Will print exception error from API
         quit()                                                  #Kills program
+
+
+camera_load()

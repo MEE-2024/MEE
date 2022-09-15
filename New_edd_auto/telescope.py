@@ -32,6 +32,14 @@ def telescope_load():
             print("ERROR. This was not a choice. Try again.")
             tracking_rates()
 
+        print("""
+    Tracking Rates Key:
+    0 = Sidereal
+    1 = Lunar
+    2 = Solar
+    3 = King 
+    """)
+
 
 
     try:
@@ -55,7 +63,7 @@ def telescope_load():
         
 
     
-
+telescope_load()
 
 
 
