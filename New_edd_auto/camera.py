@@ -1,7 +1,7 @@
 from alpaca.camera import *
 from alpaca.telescope import *
 from alpaca.exceptions import *
-import socket
+
 
 #This script strictly loads the camera into python
 def camera_load():
