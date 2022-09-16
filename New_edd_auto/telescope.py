@@ -1,15 +1,18 @@
 from alpaca.camera import *
 from alpaca.telescope import *
 from alpaca.exceptions import *
-import socket
+
 
 def telescope_load():
     print("Please connect to your private network that you will be running ASCOM Alpaca.")
     input("Once completed, please press ENTER: ")
 
-    hostname = socket.gethostname()                             #Finds IP address of the wireless network
-    IP_address = socket.gethostbyname(hostname)
+    IP_address = input("Enter IP address of the homebase computer: ")
     print(f"IP address of your private network:{IP_address}")
+    port = 11111                                                #default port number. Can be changed in ASCOM Remote server settings
+    IP_port = IP_address + ":" + str(port)                      #Combines IP and port in format for Alpyca
+    print(IP_port)
+
     port = 11111                                                #default port number. Can be changed in ASCOM Remote server settings
     IP_port = IP_address + ":" + str(port)                      #Combines IP and port in format for Alpyca
     print(IP_port)
