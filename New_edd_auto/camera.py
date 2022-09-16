@@ -8,8 +8,7 @@ def camera_load():
     print("Please connect to your private network that you will be running ASCOM Alpaca.")
     input("Once completed, please press ENTER: ")
 
-    hostname = socket.gethostname()                             #Finds IP address of the wireless network
-    IP_address = socket.gethostbyname(hostname)
+    IP_address = input("Enter IP address of the homebase computer: ")
     print(f"IP address of your private network:{IP_address}")
     port = 11111                                                #default port number. Can be changed in ASCOM Remote server settings
     IP_port = IP_address + ":" + str(port)                      #Combines IP and port in format for Alpyca
@@ -31,6 +30,7 @@ def camera_load():
         print()
     except Exception as e:
         print(f"Exception occured: {str(e)}")                   #Will print exception error from API
+        print("Most likely, you typed the incorrect IP address. Make sure to include decimals in input. Also check to make sure you are connected to the private network")
         quit()                                                  #Kills program
 
 
