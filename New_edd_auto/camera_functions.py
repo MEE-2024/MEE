@@ -5,12 +5,11 @@ import numpy as np
 from alpaca.camera import *
 from alpaca.telescope import *
 from alpaca.exceptions import *
-from camera_settings import *
-from camera import *
 import astropy.io.fits as fits
 
+
 def camera_functions():
-    camera_load()                           #loads camera
+    from camera import camera_load                           #loads camera
     from camera import stacy                #imports camera from camera module
     print()
     print(f"Camera driver: {stacy.Name}")
@@ -71,7 +70,7 @@ def camera_functions():
         hdr["Comment"] = "Contact the NASA Science Office of Standards and Technology for the"
         hdr["Comment"] = "FITS Definition document #100 and other FITS information"
 
-        hdr["BZERO"] = 32768.0
+        hdr["BZERO"] = 0                                #BZERO value for unit 16: 32768.0
         hdr["BSCALE"] = 1.0
 
         hdu = fits.PrimaryHDU(nda, header = hdr)              #converting data into fits file format
@@ -86,3 +85,4 @@ def camera_functions():
     print("Done")
 
 
+camera_functions()
