@@ -1,0 +1,6 @@
+ASCOM download location:	    https://ascom-standards.org/Downloads/Index.htm
+ASCOM driver github:              https://github.com/ascomghostdrivers/legacydrivers
+Telescope driver location:	    https://github.com/ascomghostdrivers/legacydrivers/tree/main/TelescopeDrivers
+ZWO ASI camera driver location:   https://astronomy-imaging-camera.com/software-drivers
+Installation of Python location:  https://www.python.org/
+Information regarding FITS files: https://fits.gsfc.nasa.gov/
