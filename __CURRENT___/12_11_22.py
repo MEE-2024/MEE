@@ -127,9 +127,9 @@ class Mount_Movement_Win(QWidget):
         self.tracking_list_label.adjustSize()
 
         #active slewing label
-        self.active_ra_label = QtWidgets.QLabel(self)
-        self.active_ra_label.setText("Current RA:")
-        self.active_ra_label.move(100,350)
+        self.active_ra_label = QtWidgets.QLabel(self)       #Defining it as a QLabel
+        self.active_ra_label.setText("Current RA:")         #Telling the label to display text
+        self.active_ra_label.move(100,350)                  #Setting its pixel location
 
         #active ra label
         self.active_ra_slew_label = QtWidgets.QLabel(self)
@@ -187,8 +187,13 @@ class Mount_Movement_Win(QWidget):
         while(self.albert.Slewing):
             #QTimer.startTimer()
             #time.sleep(1)     #DONT use this function because it stops entire program, we want things to be running still
-            self.active_ra_slew_label.setText(self.albert.RightAscension)
-            self.active_dec_slew_label.setText(self.albert.Declination)
+            #use await asyncio.sleep(5) here
+            self.active_ra_slew_label.setNum(self.albert.RightAscension)  #Need to do setNum so it recognizes it as a float, not a
+            self.active_dec_slew_label.setNum(self.albert.Declination)
+
+            QApplication.processEvents()     #This will update the display
+
+            
             self.active_slewing_label.setStyleSheet("background-color: pink")
             self.active_slewing_label.setText("    Slewing")
             self.active_slewing_label.adjustSize()
