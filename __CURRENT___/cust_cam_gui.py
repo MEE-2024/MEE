@@ -19,6 +19,7 @@ CAM_HEIGHT = 500
 
 #we need to make a day/night radio button
 
+#ADD A GO BUTTON
 
 
 class Camera_Func_Win(QMainWindow):
@@ -27,12 +28,21 @@ class Camera_Func_Win(QMainWindow):
         super(Camera_Func_Win,self).__init__()
         self.setGeometry(CAM_XPOS, CAM_YPOS, CAM_WIDTH, CAM_HEIGHT)
         self.setWindowTitle("Camera Functions")
+       
+       
+       
+       
+       
         self.CAM_initUI()
     def CAM_initUI(self):
         self.cam_ip = self.get_cam_ip()
         #commented out sections can be unblocked when running actual test
         self.stacy = Camera(f'{self.cam_ip}:11111',0)
         
+
+
+
+
         #GUI vars########################################################
         self.cam_state = self.stacy.CameraState#####maybe needs ()
         self.cam_temp = self.stacy.CCDTemperature
@@ -67,7 +77,7 @@ class Camera_Func_Win(QMainWindow):
         #Cam state label
         self.cam_state_label = QtWidgets.QLabel(self)
         self.cam_state_label.setStyleSheet("border: 1px solid black;""background-color: cyan")
-        self.cam_state_label.setText("Camera State:")
+        self.cam_state_label.setText("Camera State:")  #camera state: 1-active (using if-statements using function)
         self.cam_state_label.move(50,50)
         self.cam_state_label.adjustSize()
         #Cam state label value
@@ -128,7 +138,7 @@ class Camera_Func_Win(QMainWindow):
         self.num_exposure_label_val.move(51,225)
         #Cam exposure amount set value btn
         self.set_exp_amount_btn = QtWidgets.QPushButton(self)
-        self.set_exp_amount_btn.setText("Set Exposure Amount")
+        self.set_exp_amount_btn.setText("Set Number of Images")
         self.set_exp_amount_btn.clicked.connect(self.get_cam_exposure_amount)
         self.set_exp_amount_btn.move(50,260)
         self.set_exp_amount_btn.adjustSize()
@@ -195,6 +205,9 @@ class Camera_Func_Win(QMainWindow):
         os.mkdir(dir)                                       #makes folder in location
         folderpath = os.path.abspath(dir)                   #folderpath is direct string of path(Ex: C:\user) 
 
+
+#Display directory and filename in GUI to prevent loss in PC
+
         img_collected_count = 0 
         while img_collected_count != self.num_exposures:                          #won't exit whileloop until img_collected_count == num_exps
             img_collected_count += 1                                    #will add 1 after each iteration
@@ -206,7 +219,7 @@ class Camera_Func_Win(QMainWindow):
                 if time_passed >= 120:                              #this will break the camera process if it takes too long to take picture
                     print("ERROR. Image is taking too long to be ready")
                     print("Unable to capture image.")
-                    time.sleep(1)
+                    #time.sleep(1)
                     print("¯\_ (ツ)_/¯")
                     img_collected_count = self.num_exposures
 

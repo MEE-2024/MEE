@@ -31,7 +31,8 @@ class Mount_Movement_Win(QWidget):
         self.initUI()  
     def initUI(self):
         #everything that goes inside the window goes inside this function
-
+        #fix slew idle button
+        #stop slewing/cancel button
         #vars
         #where win shows up
         self.user_ra = 0.0
@@ -47,13 +48,13 @@ class Mount_Movement_Win(QWidget):
 
         #ra label
         self.ra_label = QtWidgets.QLabel(self)
-        self.ra_label.setText("Desired Right Ascension:")
-        self.ra_label.move(50,70)
-        self.ra_label.adjustSize()
-
+        self.ra_label.setText("Desired Right Ascension:")   #add units of HH:mm:ss. Want RA decimal to HH:mm:ss
+        self.ra_label.move(50,70)     
+        self.ra_label.adjustSize()   #change font size, bolden, arial/comic sans, 12 point plus, also show more digits for number inputs
+                                    #black for background and white lettering, and add tactile feedback(noise for buttons, record clicking sound)
         #ra output label
-        self.ra_output_label = QtWidgets.QLabel(self)
-        self.ra_output_label.setStyleSheet("background-color: lightgrey")
+        self.ra_output_label = QtWidgets.QLabel(self)                   
+        self.ra_output_label.setStyleSheet("background-color: lightgrey")  
         self.ra_output_label.move(50,95)
 
         #ra button
@@ -64,7 +65,7 @@ class Mount_Movement_Win(QWidget):
 
         #dec label
         self.dec_label = QtWidgets.QLabel(self)
-        self.dec_label.setText("Desired Declination:")
+        self.dec_label.setText("Desired Declination:")  #add units of DD:dd. This will be format that is inputted and add function to split up values between semicolons
         self.dec_label.move(50,170)
         self.dec_label.adjustSize()
 
@@ -87,44 +88,44 @@ class Mount_Movement_Win(QWidget):
         slew_Btn.move(50, 270)
 
         #set tracking radio button
-        self.track_rate_sidereal = QtWidgets.QRadioButton(self,"Mode Auto")
-        self.track_rate_sidereal.setToolTip("Used for tracking stars and planets")
-        self.track_rate_sidereal.toggled.connect(self.set_track_rate)
-        self.track_rate_sidereal.mode = "Auto"
-        self.track_rate_sidereal.move(305,95)
-        self.sidereal_label = QtWidgets.QLabel(self)
-        self.sidereal_label.setText("        Sidereal")
-        self.sidereal_label.setStyleSheet("background-color: lightgrey")
-        self.sidereal_label.move(330,95)
+        #self.track_rate_sidereal = QtWidgets.QRadioButton(self,"Mode Auto")
+        #self.track_rate_sidereal.setToolTip("Used for tracking stars and planets")
+        #self.track_rate_sidereal.toggled.connect(self.set_track_rate)
+        #self.track_rate_sidereal.mode = "Auto"
+        #self.track_rate_sidereal.move(305,95)
+        #self.sidereal_label = QtWidgets.QLabel(self)
+        #self.sidereal_label.setText("        Sidereal")
+        #self.sidereal_label.setStyleSheet("background-color: lightgrey")
+        #self.sidereal_label.move(330,95)
 
         #set track rate solar
-        self.track_rate_solar = QtWidgets.QRadioButton(self,"Mode Auto")
-        self.track_rate_solar.setToolTip("Used for tracking the Sun (SOL)")
-        self.track_rate_solar.toggled.connect(self.set_track_rate)
-        self.track_rate_solar.mode = "Auto"
-        self.track_rate_solar.move(305,130)
-        self.solar_label = QtWidgets.QLabel(self)
-        self.solar_label.setText("        Solar")
-        self.solar_label.setStyleSheet("background-color: lightgrey")
-        self.solar_label.move(330,130)
+        #self.track_rate_solar = QtWidgets.QRadioButton(self,"Mode Auto")
+        #self.track_rate_solar.setToolTip("Used for tracking the Sun (SOL)")
+        #self.track_rate_solar.toggled.connect(self.set_track_rate)
+        #self.track_rate_solar.mode = "Auto"
+        #self.track_rate_solar.move(305,130)
+        #self.solar_label = QtWidgets.QLabel(self)
+        #self.solar_label.setText("        Solar")
+        #self.solar_label.setStyleSheet("background-color: lightgrey")
+        #self.solar_label.move(330,130)
 
         #set track rate lunar
-        self.track_rate_lunar = QtWidgets.QRadioButton(self,"Mode Auto")
-        self.track_rate_lunar.setToolTip("Used for tracking the moon (LUNAR)")
-        self.track_rate_lunar.toggled.connect(self.set_track_rate)
-        self.track_rate_lunar.mode = "Auto"
-        self.track_rate_lunar.move(305,165)
-        self.lunar_label = QtWidgets.QLabel(self)
-        self.lunar_label.setText("        Lunar")
-        self.lunar_label.setStyleSheet("background-color: lightgrey")
-        self.lunar_label.move(330,165)
+        #self.track_rate_lunar = QtWidgets.QRadioButton(self,"Mode Auto")
+        #self.track_rate_lunar.setToolTip("Used for tracking the moon (LUNAR)")
+        #self.track_rate_lunar.toggled.connect(self.set_track_rate)
+        #self.track_rate_lunar.mode = "Auto"
+        #self.track_rate_lunar.move(305,165)
+        #self.lunar_label = QtWidgets.QLabel(self)
+        #self.lunar_label.setText("        Lunar")
+        #self.lunar_label.setStyleSheet("background-color: lightgrey")
+        #self.lunar_label.move(330,165)
 
         #tracking rate main label
-        self.tracking_list_label = QtWidgets.QLabel(self)
-        self.tracking_list_label.setText("        Tracking Rates     ")
-        self.tracking_list_label.setStyleSheet("background-color: lightgrey")
-        self.tracking_list_label.move(305,70)
-        self.tracking_list_label.adjustSize()
+        #self.tracking_list_label = QtWidgets.QLabel(self)
+        ##self.tracking_list_label.setText("        Tracking Rates     ")
+        #self.tracking_list_label.setStyleSheet("background-color: lightgrey")
+        #self.tracking_list_label.move(305,70)
+        #self.tracking_list_label.adjustSize()
 
         #active slewing label
         self.active_ra_label = QtWidgets.QLabel(self)       #Defining it as a QLabel
