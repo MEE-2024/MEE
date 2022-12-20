@@ -1,4 +1,4 @@
-from PySide6 import QtWidgets, QtCore, QtGui 
+from PySide6 import QtWidgets, QtCore, QtGui
 from PySide6.QtCore import QTimer, Qt
 from PySide6.QtWidgets import QApplication, QMainWindow, QRadioButton, QTextBrowser, QSlider
 
@@ -40,7 +40,7 @@ class Camera_Func_Win(QMainWindow):
         
         #temperature updater
         self.temp_update_timer = QTimer(self)   # creating a timer within the camera class
-        self.temp_update_timer.setInterval(500)  # 1 second timer
+        self.temp_update_timer.setInterval(500)  # 0.5 second timer
         self.temp_update_timer.timeout.connect(self.update_temp_label)  #when timer goes off, run update_temp_label
         self.temp_update_timer.start()  # Start the timer
 
@@ -117,7 +117,8 @@ class Camera_Func_Win(QMainWindow):
 
         #Camera state label
         self.cam_state_label = QtWidgets.QLabel(self)   #Label for camera state
-        self.cam_state_label.setStyleSheet("border: 2px solid black;""background-color: cyan")
+        self.cam_state_label.setFrameStyle(QtWidgets.QFrame.Panel|QtWidgets.QFrame.Sunken)
+        self.cam_state_label.setStyleSheet("background-color: rgb(255,70,70)")
         self.cam_state_label.setText(f"Camera State: 0 - Idle ")  #Had to assign a string first, but is deleted after 0.5 seconds 
         self.cam_state_label.move(1145,125)   #position of label
         self.cam_state_label.setFont(bold_font)  #20 point bold arial font
@@ -128,25 +129,27 @@ class Camera_Func_Win(QMainWindow):
 
         #Current RA label
         self.current_RA_label =  QtWidgets.QLabel(self)
-        self.current_RA_label.setStyleSheet("border: 2px solid black;""background-color: cyan")
+        self.cam_state_label.setFrameStyle(QtWidgets.QFrame.Panel|QtWidgets.QFrame.Sunken)
+        self.current_RA_label.setStyleSheet("background-color: rgb(255,70,70)")
         self.current_RA_label.setText(f"  RA: {self.RA} ")
         self.current_RA_label.setGeometry(QtCore.QRect(650,110,430,40))  
         self.current_RA_label.setFont(bold_font)
-        #self.current_RA_label.setAlignment(Qt.AlignCenter)
+        
 
         #Current DEC label
         self.current_DEC_label = QtWidgets.QLabel(self)
-        self.current_DEC_label.setStyleSheet("border: 2px solid black;""background-color: cyan")
+        self.current_DEC_label.setFrameStyle(QtWidgets.QFrame.Panel|QtWidgets.QFrame.Sunken)
+        self.current_DEC_label.setStyleSheet("background-color:rgb(255,70,70)")
         self.current_DEC_label.setText(f"DEC: {self.DEC} ")
-        self.current_DEC_label.setGeometry(QtCore.QRect(650,148,430,40)) 
+        self.current_DEC_label.setGeometry(QtCore.QRect(650,155,430,40)) 
         self.current_DEC_label.setFont(bold_font)
-        #self.current_DEC_label.setAlignment(Qt.AlignCenter)
-
+        
 
 
         #Camera temp label
         self.cam_temp_label = QtWidgets.QLabel(self)
-        self.cam_temp_label.setStyleSheet("border: 2px solid black;""background-color: cyan")
+        self.cam_temp_label.setFrameStyle(QtWidgets.QFrame.Panel|QtWidgets.QFrame.Sunken)
+        self.cam_temp_label.setStyleSheet("background-color: rgb(255,70,70)")
         self.cam_temp_label.move(1100,50)
         self.cam_temp_label.setText(f"Camera Temperature: {self.stacy.CCDTemperature} °C ") #seems redundent, but there must be some info in QLabel at the start
         self.cam_temp_label.setFont(bold_font)
@@ -156,7 +159,8 @@ class Camera_Func_Win(QMainWindow):
 
         #Camera fan state label
         self.cam_fan_state_label = QtWidgets.QLabel(self)
-        self.cam_fan_state_label.setStyleSheet("border: 2px solid black;""background-color: cyan")
+        self.cam_fan_state_label.setFrameStyle(QtWidgets.QFrame.Panel|QtWidgets.QFrame.Sunken)
+        self.cam_fan_state_label.setStyleSheet("background-color: rgb(255,70,70)")
         self.cam_fan_state_label.setText(f"Camera fan: {self.cam_fan} ")
         self.cam_fan_state_label.move(1180,200)
         self.cam_fan_state_label.setFont(bold_font)
@@ -166,7 +170,8 @@ class Camera_Func_Win(QMainWindow):
 
         #Camera exposure amount label
         self.num_exposure_label = QtWidgets.QLabel(self)
-        self.num_exposure_label.setStyleSheet("border: 2px solid black;""background-color: ")
+        self.num_exposure_label.setFrameStyle(QtWidgets.QFrame.Panel|QtWidgets.QFrame.Sunken)
+        self.num_exposure_label.setStyleSheet("background-color: rgb(255,70,70) ")
         self.num_exposure_label.setText("Exposure Amount:")
         self.num_exposure_label.move(50,50)
         self.num_exposure_label.setFont(bold_font)
@@ -182,8 +187,9 @@ class Camera_Func_Win(QMainWindow):
         #Cam exposure amount set value btn
         self.set_exp_amount_btn = QtWidgets.QPushButton(self)
         self.set_exp_amount_btn.setText("Set Number of Images")
+        self.set_exp_amount_btn.setStyleSheet("background-color: rgb(211,211,211)")
         self.set_exp_amount_btn.clicked.connect(self.get_cam_exposure_amount)  #when clicked, sends to get_cam_exposure_amount
-        self.set_exp_amount_btn.move(90,150)
+        self.set_exp_amount_btn.move(90,160)
         self.set_exp_amount_btn.setFont(small_bold_font)
         self.set_exp_amount_btn.adjustSize()
 
@@ -191,7 +197,8 @@ class Camera_Func_Win(QMainWindow):
 
         #Cam exposure time label
         self.time_exposure_label = QtWidgets.QLabel(self)
-        self.time_exposure_label.setStyleSheet("border: 2px solid black;""background-color: ")
+        self.time_exposure_label.setFrameStyle(QtWidgets.QFrame.Panel|QtWidgets.QFrame.Sunken)
+        self.time_exposure_label.setStyleSheet("background-color:rgb(255,70,70) ")
         self.time_exposure_label.setText("Exposure Time:")
         self.time_exposure_label.move(350,50)
         self.time_exposure_label.setFont(bold_font)
@@ -206,9 +213,10 @@ class Camera_Func_Win(QMainWindow):
         
         #Cam exposure time set value btn
         self.time_exposure_btn = QtWidgets.QPushButton(self)
+        self.time_exposure_btn.setStyleSheet("background-color: rgb(211,211,211)")
         self.time_exposure_btn.setText("Set Exposure Time")
         self.time_exposure_btn.clicked.connect(self.get_cam_exposure_time) 
-        self.time_exposure_btn.move(385,150)
+        self.time_exposure_btn.move(385,160)
         self.time_exposure_btn.setFont(small_bold_font)
         self.time_exposure_btn.adjustSize()
 
@@ -216,7 +224,8 @@ class Camera_Func_Win(QMainWindow):
 
         #Create file name label
         self.file_label = QtWidgets.QLabel(self)
-        self.file_label.setStyleSheet("border: 2px solid black;""background-color: ")
+        self.file_label.setFrameStyle(QtWidgets.QFrame.Panel|QtWidgets.QFrame.Sunken)
+        self.file_label.setStyleSheet("background-color:rgb(255,70,70) ")
         self.file_label.setText(" File Name: ")
         self.file_label.setFont(bold_font)
         self.file_label.move(50,250)
@@ -232,8 +241,9 @@ class Camera_Func_Win(QMainWindow):
         #Create file name label value btn
         self.file_btn = QtWidgets.QPushButton(self)
         self.file_btn.setText("Set File Name")
+        self.file_btn.setStyleSheet("background-color: rgb(211,211,211)")
         self.file_btn.clicked.connect(self.get_dir_file_name)
-        self.file_btn.move(80,350)
+        self.file_btn.move(80,360)
         self.file_btn.setFont(small_bold_font)
         self.file_btn.adjustSize()
 
@@ -241,7 +251,8 @@ class Camera_Func_Win(QMainWindow):
 
         #Create directory label
         self.dir_label = QtWidgets.QLabel(self)
-        self.dir_label.setStyleSheet("border: 2px solid black;""background-color: ")
+        self.dir_label.setFrameStyle(QtWidgets.QFrame.Panel|QtWidgets.QFrame.Sunken)
+        self.dir_label.setStyleSheet("background-color: rgb(255,70,70)")
         self.dir_label.setText(" Directory Options: ")
         self.dir_label.setFont(bold_font)
         self.dir_label.move(260,250)
@@ -286,9 +297,10 @@ class Camera_Func_Win(QMainWindow):
         
         #Folderpath name display label
         self.folderpath_display_label = QtWidgets.QLabel(self)
+        self.folderpath_display_label.setFrameStyle(QtWidgets.QFrame.Panel|QtWidgets.QFrame.Sunken)
         self.folderpath_display_label.setText(" Name of file path: ")
         self.folderpath_display_label.move(300,480)
-        self.folderpath_display_label.setStyleSheet("border: 2px solid black;""background-color :")
+        self.folderpath_display_label.setStyleSheet("background-color :rgb(255,70,70)")
         self.folderpath_display_label.setFont(bold_font)
         self.folderpath_display_label.adjustSize()
 
@@ -304,8 +316,8 @@ class Camera_Func_Win(QMainWindow):
         #Start Exposure Button
         self.start_exposure_btn = QtWidgets.QPushButton(self)
         self.start_exposure_btn.setText(" Start Exposure ")
-        self.start_exposure_btn.setGeometry(305, 620, 250, 100)
-        self.start_exposure_btn.setStyleSheet("border: 5px solid black;""background-color : lime")
+        self.start_exposure_btn.setGeometry(305, 630, 250, 100)
+        self.start_exposure_btn.setStyleSheet("border: 5px solid black;""background-color : rgb(152,255,152)")
         self.start_exposure_btn.setFont(bold_font)
         self.start_exposure_btn.clicked.connect(self.cam_exposure_func)
 
@@ -314,8 +326,9 @@ class Camera_Func_Win(QMainWindow):
         #Create folder Button
         self.create_folder = QtWidgets.QPushButton(self)
         self.create_folder.setText(" Create Folder ")
+        self.create_folder.setStyleSheet("background-color: rgb(211,211,211)")
         self.create_folder.setFont(small_bold_font)
-        self.create_folder.move(380,580)
+        self.create_folder.move(380,590)
         self.create_folder.adjustSize()
         self.create_folder.clicked.connect(self.path_creater)
 
@@ -323,8 +336,9 @@ class Camera_Func_Win(QMainWindow):
 
         #Terminal Display Label
         self.term_display_label = QtWidgets.QLabel(self)
+        self.term_display_label.setFrameStyle(QtWidgets.QFrame.Panel|QtWidgets.QFrame.Sunken)
         self.term_display_label.setText(" Terminal Output ")
-        self.term_display_label.setStyleSheet("border: 2px solid black;""background-color : ")
+        self.term_display_label.setStyleSheet("background-color :rgb(255,70,70) ")
         self.term_display_label.setFont(bold_font)
         self.term_display_label.move(1080,300)
         self.term_display_label.adjustSize()
@@ -333,9 +347,10 @@ class Camera_Func_Win(QMainWindow):
 
         #Gain Label
         self.gain_label = QtWidgets.QLabel(self)
+        self.gain_label.setFrameStyle(QtWidgets.QFrame.Panel|QtWidgets.QFrame.Sunken)
         self.stacy.Gain = 30   #default
         self.gain_label.setText(f" Gain Values: {self.stacy.Gain}  ")
-        self.gain_label.setStyleSheet("border: 2px solid black;""background-color : ")
+        self.gain_label.setStyleSheet("background-color :rgb(255,70,70) ")
         self.gain_label.setFont(bold_font)
         self.gain_label.move(600,250)
         self.gain_label.adjustSize()
@@ -348,6 +363,7 @@ class Camera_Func_Win(QMainWindow):
         self.gain_slider.setFixedWidth(240)
         self.gain_slider.setMinimum(0)
         self.gain_slider.setMaximum(100)
+        self.gain_slider.setStyleSheet("background-color: pink ")
         self.gain_slider.move(600,300)
         self.gain_slider.valueChanged[int].connect(self.change_value)
 
@@ -428,7 +444,8 @@ class Camera_Func_Win(QMainWindow):
         if self.ok:   #if-statement allows the label to be placed if clicked Okay button
             self.cam_user_ip_address_label = QtWidgets.QLabel(self)
             self.cam_user_ip_address_label.setText(f"IP Address: {self.cam_user_ip_address_input}")#dont need [0] thing. Just does 1
-            self.cam_user_ip_address_label.setStyleSheet("border: 2px solid black;""background-color: cyan")
+            self.cam_user_ip_address_label.setFrameStyle(QtWidgets.QFrame.Panel|QtWidgets.QFrame.Sunken)
+            self.cam_user_ip_address_label.setStyleSheet("background-color: rgb(255,70,70)")
             self.cam_user_ip_address_label.setFont(bold_font)
             self.cam_user_ip_address_label.move(700,50)
             self.cam_user_ip_address_label.adjustSize()
@@ -586,7 +603,7 @@ class Camera_Func_Win(QMainWindow):
 def window():
     cam_app = QApplication(sys.argv)
     cam_win = Camera_Func_Win()
-    #cam_win.show()
+    cam_win.setStyleSheet("background-color: rgb(255, 100, 100)")
     cam_win.showMaximized()   #Automatically makes the window open on the entire screen
     sys.exit(cam_app.exec())  
 
