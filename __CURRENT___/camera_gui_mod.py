@@ -1,7 +1,7 @@
 from PySide6 import QtWidgets, QtCore, QtGui
 from PySide6.QtCore import QTimer, Qt
 from PySide6.QtWidgets import QApplication, QMainWindow, QRadioButton, QTextBrowser, QSlider
-
+import matplotlib.pyplot as plt
 from PySide6.QtGui import QFont 
 import time
 import sys
@@ -310,20 +310,10 @@ class Camera_Func_Win(QMainWindow):
         self.folderpath_display.setGeometry(QtCore.QRect(180,530,500,50))  #(x,y,width, height)
         self.folderpath_display.setFont(small_bold_font)
         self.folderpath_display.setAlignment(Qt.AlignCenter)
-       
-
-
-        #Start Exposure Button
-        self.start_exposure_btn = QtWidgets.QPushButton(self)
-        self.start_exposure_btn.setText(" Start Exposure ")
-        self.start_exposure_btn.setGeometry(305, 630, 250, 100)
-        self.start_exposure_btn.setStyleSheet("border: 5px solid black;""background-color : rgb(152,255,152)")
-        self.start_exposure_btn.setFont(bold_font)
-        self.start_exposure_btn.clicked.connect(self.cam_exposure_func)
 
 
 
-        #Create folder Button
+         #Create folder Button
         self.create_folder = QtWidgets.QPushButton(self)
         self.create_folder.setText(" Create Folder ")
         self.create_folder.setStyleSheet("background-color: rgb(211,211,211)")
@@ -331,6 +321,36 @@ class Camera_Func_Win(QMainWindow):
         self.create_folder.move(380,590)
         self.create_folder.adjustSize()
         self.create_folder.clicked.connect(self.path_creater)
+       
+
+
+        #Start Exposure Button
+        self.start_exposure_btn = QtWidgets.QPushButton(self)
+        self.start_exposure_btn.setText(" Start Exposure ")
+        self.start_exposure_btn.setGeometry(50, 630, 250, 100)
+        self.start_exposure_btn.setStyleSheet("border: 5px solid black;""background-color : rgb(152,255,152)")
+        self.start_exposure_btn.setFont(bold_font)
+        self.start_exposure_btn.clicked.connect(self.cam_exposure_func)
+
+
+
+        #Stop Exposure Button
+        self.stop_exposure_btn = QtWidgets.QPushButton(self)
+        self.stop_exposure_btn.setText(" Abort Exposure ")
+        self.stop_exposure_btn.setGeometry(325,630,250,100)
+        self.stop_exposure_btn.setStyleSheet("border: 5px solid black;""background-color :red")
+        self.stop_exposure_btn.setFont(bold_font)
+        self.stop_exposure_btn.clicked.connect(self.stacy.AbortExposure)
+
+
+
+        #Stack/view Button
+        self.stack_view_btn = QtWidgets.QPushButton(self)
+        self.stack_view_btn.setText(" Stack/View Image ")
+        self.stack_view_btn.setGeometry(600,630,250,100)
+        self.stack_view_btn.setStyleSheet("border: 5px solid black;""background-color : rgb(211,211,211)")
+        self.stack_view_btn.setFont(bold_font)
+        self.stack_view_btn.clicked.connect(self.stack_view)
 
 
 
@@ -478,6 +498,7 @@ class Camera_Func_Win(QMainWindow):
         print()
         print("get_dir_file_name function has been completed")
         print()
+        return self.dir_name
 
     #deals with button functions
     def btn_state(self):
@@ -529,7 +550,32 @@ class Camera_Func_Win(QMainWindow):
         print(f'Folderpath: {self.folderpath}')
         print()
         os.mkdir(self.folderpath)     #creates folderpath in designated directory
-        
+        return self.folderpath
+
+
+
+
+
+    def stack_view(self):
+        fitlist = []                                #creating list of fits files to stack                        #path of the directory
+        for filename in os.listdir(self.folderpath):      
+            f = os.path.join(self.folderpath, filename)   #f is a new relative path of each file in the folder fits files
+            fitlist.append(fits.getdata(f))         #storing each file in "fits files" folder in the list
+
+        finalimage = np.sum(fitlist, axis = 0)      #stacking fits files
+        outfile = str(self.dir_name) + ".fts}"              #outfile relative path 
+        hdu = fits.PrimaryHDU(finalimage)           
+        hdu.writeto(outfile, overwrite = True)      #writing stacked fits files 
+
+        #This section allows us to see what the fits file looks like in python
+        imagedata = fits.getdata(outfile)   
+        plt.imshow(imagedata, cmap = 'gray')  
+        plt.show()
+                
+
+
+
+
 
 
     #Display directory and filename in GUI to prevent loss in PC
